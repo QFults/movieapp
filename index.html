@@ -9,7 +9,15 @@
 
 <body>
 
-  
+  <form>
+    <p>
+      <label for="title">movie</label>
+      <input type="text" name="title" id="title">
+    </p>
+    <p>
+      <button id="search">Search Movie</button>
+    </p>
+  </form>
 
   <div id="movie"></div>
 
@@ -17,17 +25,22 @@
     crossorigin="anonymous"></script>
   <script>
 
-    $.ajax('http://www.omdbapi.com/?t=Goodfellas&apikey=trilogy')
-      .then(movie => {
-        console.log(movie)
-        $('#movie').html(`
+    $('#search').click(function (event) {
+      event.preventDefault()
+      let title = $('#title').val()
+      $.ajax(`http://www.omdbapi.com/?t=${title}&apikey=trilogy`)
+        .then(movie => {
+          console.log(movie)
+          $('#movie').html(`
           <img src="${movie.Poster}" alt="${movie.Title}">
           <h1>${movie.Title}</h1>
           <h3>Directed by ${movie.Director}</h3>
           <p>${movie.Plot}</p>
         `)
-      })
-      .catch(err => { console.log(err) })
+        })
+        .catch(err => { console.log(err) })
+    })
+
 
   </script>
 </body>
