@@ -21,25 +21,45 @@
 
   <div id="movie"></div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-    crossorigin="anonymous"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
 
-    $('#search').click(function (event) {
+    document.getElementById('search').addEventListener('click', event => {
       event.preventDefault()
-      let title = $('#title').val()
-      $.ajax(`http://www.omdbapi.com/?t=${title}&apikey=trilogy`)
-        .then(movie => {
+      let title = document.getElementById('title').value
+      axios.get(`http://www.omdbapi.com/?t=${title}&apikey=trilogy`)
+        .then(res => {
+          let movie = res.data
           console.log(movie)
-          $('#movie').prepend(`
-          <img src="${movie.Poster}" alt="${movie.Title}">
-          <h1>${movie.Title}</h1>
-          <h3>Directed by ${movie.Director}</h3>
-          <p>${movie.Plot}</p>
-        `)
+          let movieElem = document.createElement('div')
+          movieElem.innerHTML = `
+            <img src="${movie.Poster}" alt="${movie.Title}">
+            <h1>${movie.Title}</h1>
+            <h3>Directed by ${movie.Director}</h3>
+            <p>${movie.Plot}</p>
+          `
+          document.getElementById('movie').prepend(movieElem)
         })
         .catch(err => { console.log(err) })
     })
+
+    // $('#search').click(function (event) {
+    //   event.preventDefault()
+    //   let title = $('#title').val()
+    //   $.ajax(`http://www.omdbapi.com/?t=${title}&apikey=trilogy`)
+    //     .then(movie => {
+    //       console.log(movie)
+    //       $('#movie').prepend(`
+    //       <img src="${movie.Poster}" alt="${movie.Title}">
+    //       <h1>${movie.Title}</h1>
+    //       <h3>Directed by ${movie.Director}</h3>
+    //       <p>${movie.Plot}</p>
+    //     `)
+    //     })
+    //     .catch(err => { console.log(err) })
+    // })
 
 
   </script>
